@@ -30,6 +30,16 @@ const routes = [
   },
 
   {
+    path: '/ProjectosDocencia',
+    component: () => import('../views/ProjectosDocencia.vue')
+  },
+
+  {
+    path: '/SeguimientoMaestros',
+    component: () => import('../views/SeguimientoMaestros.vue')
+  },
+
+  {
     path: '/Instrumentacion',
     component: () => import('../views/Instrumentacion.vue')
   },
@@ -48,6 +58,7 @@ const routes = [
     path: '/Calendario',
     component: () => import('../views/Calendario.vue')
   },
+
 
   {
     path: '/DatosG',

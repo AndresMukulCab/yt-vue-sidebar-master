@@ -1,6 +1,6 @@
 <template>
-  <div class="avance-programatico">
-    <h1>Intrumentacion didactica</h1>
+  <div class="view-container">
+    <h1>Instrumentación Didáctica</h1>
     <div class="actions">
       <label class="upload-button">
         <input type="file" @change="handleFileUpload" />
@@ -53,286 +53,43 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue';
-
-const fileURL = ref(null);
-const isEditing = ref(false);
-const annotation = ref('');
-const annotations = ref([]);
-const corrections = ref([
-  { observacion: 'Falta de referencias en el capítulo 3', correccion: 'Se añadieron las referencias necesarias en el capítulo 3' },
-  { observacion: 'Errores gramaticales en la introducción', correccion: 'Se corrigieron los errores gramaticales en la introducción' }
-]);
-
-const handleFileUpload = (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      fileURL.value = e.target.result;
-    };
-    reader.readAsDataURL(file);
-  }
-};
-
-const downloadFile = () => {
-  if (fileURL.value) {
-    const link = document.createElement('a');
-    link.href = fileURL.value;
-    link.download = 'avanceProgramatico.pdf'; // Nombre predeterminado del archivo descargado
-    link.click();
-  } else {
-    alert('No hay ningún archivo para descargar');
-  }
-};
-
-const toggleEditMode = () => {
-  if (isEditing.value) {
-    saveAnnotations();
-  }
-  isEditing.value = !isEditing.value;
-};
-
-const addAnnotation = () => {
-  if (annotation.value) {
-    annotations.value.push(annotation.value);
-    annotation.value = '';
-  }
-};
-
-const removeAnnotation = (index) => {
-  annotations.value.splice(index, 1);
-};
-
-const saveAnnotations = () => {
-  // Aquí puedes añadir la lógica para guardar las anotaciones en el archivo PDF.
-  // En este ejemplo, solo simulamos el guardado.
-  alert('Anotaciones guardadas (simulación)');
-};
-</script>
-
 <style scoped>
-.avance-programatico {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2rem;
-  background-color: #f5f5f5;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 900px;
-  margin: 2rem auto;
-}
-
-h1 {
-  font-size: 2rem;
-  color: #333;
-  margin-bottom: 1.5rem;
+.view-container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1rem;
 }
 
 .actions {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-wrap: wrap;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .upload-button,
 .download-button,
 .edit-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-  text-decoration: none;
-}
-
-.upload-button input {
-  display: none;
-}
-
-.upload-button:hover,
-.download-button:hover,
-.edit-button:hover {
-  background-color: #45a049;
-}
-
-.download-button {
-  background-color: #2196f3;
-}
-
-.download-button:hover {
-  background-color: #1e88e5;
-}
-
-.download-button:disabled {
-  background-color: #9e9e9e;
-  cursor: not-allowed;
-}
-
-.edit-button {
-  background-color: #ff9800;
-}
-
-.edit-button:hover {
-  background-color: #fb8c00;
-}
-
-.edit-button:disabled {
-  background-color: #9e9e9e;
-  cursor: not-allowed;
-}
-
-.material-icons {
-  margin-left: 0.5rem;
+  flex: 1 1 200px;
 }
 
 .document-viewer {
   width: 100%;
-  max-width: 800px;
   height: 500px;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.document-viewer iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-}
+@media (max-width: 768px) {
+  .actions {
+    flex-direction: column;
+  }
 
-.editor {
-  width: 100%;
-  max-width: 800px;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
-  margin-top: 2rem;
-}
+  .document-viewer {
+    height: 300px;
+  }
 
-.editor h2 {
-  font-size: 1.5rem;
-  color: #333;
-  margin-bottom: 1rem;
-}
-
-.editor textarea {
-  width: 100%;
-  height: 100px;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 1rem;
-}
-
-.add-annotation {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-}
-
-.add-annotation:hover {
-  background-color: #456ca0;
-}
-
-.annotations {
-  margin-top: 1rem;
-}
-
-.annotations h3 {
-  font-size: 1.25rem;
-  color: #333;
-  margin-bottom: 0.5rem;
-}
-
-.annotations ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.annotations li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.annotations button {
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  padding: 0.25rem 0.5rem;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 0.875rem;
-  transition: background-color 0.3s ease;
-}
-
-.annotations button:hover {
-  background-color: #c0392b;
-}
-
-.corrections-table {
-  width: 100%;
-  max-width: 800px;
-  margin-top: 2rem;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
-}
-
-.corrections-table h2 {
-  font-size: 1.5rem;
-  color: #333;
-  margin-bottom: 1rem;
-}
-
-.corrections-table table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.corrections-table th,
-.corrections-table td {
-  padding: 0.75rem;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-
-.corrections-table th {
-  background-color: #f9f9f9;
-  font-weight: bold;
-}
-
-.corrections-table tr:last-child td {
-  border-bottom: none;
+  .editor textarea {
+    height: 80px;
+  }
 }
 </style>
