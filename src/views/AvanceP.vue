@@ -1,62 +1,198 @@
 <template>
-  <div class="avance-programatico">
-    <h1>Avance Programático</h1>
-    <div class="actions">
-      <label class="upload-button">
-        <input type="file" @change="handleFileUpload" />
-        <span>Subir Documento</span>
-        <span class="material-icons">file_upload</span>
-      </label>
-      <button class="download-button" @click="downloadFile" :disabled="!fileURL">
-        Descargar Documento
-        <span class="material-icons">file_download</span>
-      </button>
-      <button class="edit-button" @click="toggleEditMode" :disabled="!fileURL">
-        {{ isEditing ? 'Guardar Cambios' : 'Modificar Documento' }}
-        <span class="material-icons">{{ isEditing ? 'save' : 'edit' }}</span>
-      </button>
-    </div>
-    <div class="document-viewer" v-if="fileURL">
-      <iframe :src="fileURL" frameborder="0"></iframe>
-    </div>
-    <div class="editor" v-if="isEditing && fileURL">
-      <h2>Editar Documento</h2>
-      <textarea v-model="annotation" placeholder="Escribe tu anotación aquí..."></textarea>
-      <button class="add-annotation" @click="addAnnotation">Agregar Anotación</button>
-      <div class="annotations">
-        <h3>Anotaciones:</h3>
-        <ul>
-          <li v-for="(note, index) in annotations" :key="index">
-            {{ note }}
-            <button @click="removeAnnotation(index)">Eliminar</button>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div class="corrections-table" v-if="corrections.length > 0">
-      <h2>Historial de Correcciones</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Observación</th>
-            <th>Corrección Realizada</th>
-            <th>F. Periodo Programado</th>
-            <th>F. Periodo Real</th>
-            <th>F. Evaluación Programada</th>
-            <th>F. Evaluación Real</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(correction, index) in corrections" :key="index">
-            <td>{{ correction.observacion }}</td>
-            <td>{{ correction.correccion }}</td>
-            <td>{{ correction.fechaPeriodoProgramado }}</td>
-            <td>{{ correction.fechaPeriodoReal }}</td>
-            <td>{{ correction.fechaEvaluacionProgramada }}</td>
-            <td>{{ correction.fechaEvaluacionReal }}</td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="formulario-view">
+    <h1>Formulario de Caracterización de Asignatura</h1>
+    <div class="content-box">
+      <form id="forms" method="POST" enctype="multipart/form-data">
+        <div id="formulario" class="avancePro">
+          <ul class="listID">
+            <!-- Apartado 1 -->
+            <li class="list_itemID list_item--clickID">
+              <div class="list_buttonID list_buttonID--click">
+                <h2>1. Caracterización de la asignatura</h2>
+                <img src="img/flechaInd.png" class="list_arrowID" />
+              </div>
+              <ul class="listaShowID">
+                <li class="listInternaID">
+                  <div class="tablas">
+                    <table class="tablaAutomatica">
+                      <tr>
+                        <th>Caracterización de la asignatura:</th>
+                        <td>
+                          <textarea v-model="caracterizacion" rows="3" placeholder="Ingrese la caracterización aquí..."></textarea>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </li>
+              </ul>
+            </li>
+
+            <!-- Apartado 2 -->
+            <li class="list_itemID list_item--clickID">
+              <div class="list_buttonID list_buttonID--click">
+                <h2>2. Intención didáctica</h2>
+                <img src="img/flechaInd.png" class="list_arrowID" />
+              </div>
+              <ul class="listaShowID">
+                <li class="listInternaID">
+                  <div class="tablas">
+                    <table class="tablaAutomatica">
+                      <tr>
+                        <th>Intención didáctica:</th>
+                        <td>
+                          <textarea v-model="intencionDidactica" rows="3" placeholder="Ingrese la intención didáctica aquí..."></textarea>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </li>
+              </ul>
+            </li>
+
+            <!-- Apartado 3 -->
+            <li class="list_itemID list_item--clickID">
+              <div class="list_buttonID list_buttonID--click">
+                <h2>3. Competencia de la asignatura</h2>
+                <img src="img/flechaInd.png" class="list_arrowID" />
+              </div>
+              <ul class="listaShowID">
+                <li class="listInternaID">
+                  <div class="tablas">
+                    <table class="tablaAutomatica">
+                      <tr>
+                        <th>Competencia de la asignatura:</th>
+                        <td>
+                          <textarea v-model="competenciaAsignatura" rows="3" placeholder="Ingrese la competencia aquí..."></textarea>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </li>
+              </ul>
+            </li>
+
+            <!-- Apartado 4 -->
+            <li class="list_itemID list_item--clickID">
+              <div class="list_buttonID list_buttonID--click" id="pruebaCon">
+                <h2>4. Análisis por competencias específicas</h2>
+                <img src="img/flechaInd.png" class="list_arrowID" />
+              </div>
+              <ul class="listaShowID" id="prueba1">
+                <li class="listInternaID">
+                  <div class="datos">
+                    <select v-model="competenciaSeleccionada" id="seleccionCompetencia">
+                      <option v-for="(competencia, index) in competencias" :key="index" :value="competencia">
+                        {{ competencia }}
+                      </option>
+                    </select>
+                    <h4>Competencia No. <span id="Competencia">{{ competenciaSeleccionada }}</span></h4>
+                    <div class="camDes">
+                      <h4>Descripción:</h4>
+                      <input type="text" v-model="descripcionCompetencia" id="descripcion" />
+                    </div>
+                  </div>
+                  <div class="tablas">
+                    <table class="tablaCompetencia">
+                      <tr>
+                        <th>Temas y subtemas</th>
+                        <th>Actividades de aprendizaje</th>
+                        <th>Actividades de enseñanza</th>
+                      </tr>
+                      <tr>
+                        <td>
+                          <textarea v-model="temasSubtemas" rows="5" placeholder="Ingrese temas y subtemas aquí..."></textarea>
+                        </td>
+                        <td>
+                          <textarea v-model="actividadesAprendizaje" rows="5" placeholder="Ingrese actividades de aprendizaje aquí..."></textarea>
+                        </td>
+                        <td>
+                          <textarea v-model="actividadesEnsenanza" rows="5" placeholder="Ingrese actividades de enseñanza aquí..."></textarea>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th colspan="2">Desarrollo de competencias genéricas</th>
+                        <th>Horas-Practicas-Teoricas</th>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <textarea v-model="desarrolloCompetencias" rows="5" placeholder="Ingrese desarrollo de competencias aquí..."></textarea>
+                        </td>
+                        <td>
+                          <textarea v-model="horasPracticasTeoricas" rows="5" placeholder="Ingrese horas prácticas y teóricas aquí..."></textarea>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </li>
+              </ul>
+            </li>
+
+            <!-- Apartado 5 -->
+            <li class="list_itemID list_item--clickID">
+              <div class="list_buttonID list_buttonID--click">
+                <h2>5. Fuentes de información y apoyos didácticos</h2>
+                <img src="img/flechaInd.png" class="list_arrowID" />
+              </div>
+              <ul class="listaShowID">
+                <li class="listInternaID">
+                  <div class="tablas">
+                    <table class="tablaManual">
+                      <tr>
+                        <th>Fuentes de información</th>
+                        <th>Apoyos didácticos</th>
+                      </tr>
+                      <tr>
+                        <td>
+                          <textarea v-model="fuentesInformacion" rows="5" placeholder="Ingrese fuentes de información aquí..."></textarea>
+                        </td>
+                        <td>
+                          <textarea v-model="apoyosDidacticos" rows="5" placeholder="Ingrese apoyos didácticos aquí..."></textarea>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </li>
+              </ul>
+            </li>
+
+            <!-- Apartado 6 -->
+            <li class="list_itemID list_item--clickID">
+              <div class="list_buttonID list_buttonID--click">
+                <h2>6. Calendarización de evaluación en semanas</h2>
+                <img src="img/flechaInd.png" class="list_arrowID" />
+              </div>
+              <ul class="listaShowID">
+                <li class="listInternaID">
+                  <div class="tablas">
+                    <table class="tablaManual">
+                      <tr class="semanas">
+                        <th>Semanas</th>
+                        <td v-for="semana in semanas" :key="semana">{{ semana }}</td>
+                      </tr>
+                      <tr class="semanas">
+                        <th>TP</th>
+                        <td v-for="(semana, index) in semanas" :key="`TP-${index}`">
+                          <input type="text" v-model="tpSemana[index]" class="semanasTP" :placeholder="`TP${semana}`" />
+                        </td>
+                      </tr>
+                      <tr class="semanas">
+                        <th>TR</th>
+                        <td v-for="(semana, index) in semanas" :key="`TR-${index}`">
+                          <input type="text" v-model="trSemana[index]" class="semanasTP" :placeholder="`TR${semana}`" />
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <div class="botonesID">
+            <Button id="guarda" class="btnB" @click="guardarFormulario">Guardar</Button>
+            <Button id="enviar" class="btn" @click="enviarFormulario">Enviar</Button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </template>
@@ -64,297 +200,162 @@
 <script setup>
 import { ref } from 'vue';
 
-const fileURL = ref(null);
-const isEditing = ref(false);
-const annotation = ref('');
-const annotations = ref([]);
-const corrections = ref([
-  { 
-    observacion: 'Falta de referencias en el capítulo 3', 
-    correccion: 'Se añadieron las referencias necesarias en el capítulo 3',
-    fechaPeriodoProgramado: '2024-06-01',
-    fechaPeriodoReal: '2024-06-05',
-    fechaEvaluacionProgramada: '2024-06-10',
-    fechaEvaluacionReal: '2024-06-15'
-  },
-  { 
-    observacion: 'Fechas tentativamente incorrectas', 
-    correccion: 'Modificacion de las de periodo programado',
-    fechaPeriodoProgramado: '2024-07-01',
-    fechaPeriodoReal: '2024-07-05',
-    fechaEvaluacionProgramada: '2024-07-10',
-    fechaEvaluacionReal: '2024-07-15'
-  }
-]);
+// Datos del formulario
+const caracterizacion = ref('');
+const intencionDidactica = ref('');
+const competenciaAsignatura = ref('');
+const competencias = ref(['Competencia 1', 'Competencia 2', 'Competencia 3']);
+const competenciaSeleccionada = ref(competencias.value[0]);
+const descripcionCompetencia = ref('');
+const temasSubtemas = ref('');
+const actividadesAprendizaje = ref('');
+const actividadesEnsenanza = ref('');
+const desarrolloCompetencias = ref('');
+const horasPracticasTeoricas = ref('');
+const fuentesInformacion = ref('');
+const apoyosDidacticos = ref('');
+const semanas = ref(Array.from({ length: 17 }, (_, i) => i + 1));
+const tpSemana = ref(Array(17).fill(''));
+const trSemana = ref(Array(17).fill(''));
 
-const handleFileUpload = (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      fileURL.value = e.target.result;
-    };
-    reader.readAsDataURL(file);
-  }
+// Funciones para guardar y enviar el formulario
+const guardarFormulario = () => {
+  console.log('Formulario guardado:', {
+    caracterizacion: caracterizacion.value,
+    intencionDidactica: intencionDidactica.value,
+    competenciaAsignatura: competenciaAsignatura.value,
+    competenciaSeleccionada: competenciaSeleccionada.value,
+    descripcionCompetencia: descripcionCompetencia.value,
+    temasSubtemas: temasSubtemas.value,
+    actividadesAprendizaje: actividadesAprendizaje.value,
+    actividadesEnsenanza: actividadesEnsenanza.value,
+    desarrolloCompetencias: desarrolloCompetencias.value,
+    horasPracticasTeoricas: horasPracticasTeoricas.value,
+    fuentesInformacion: fuentesInformacion.value,
+    apoyosDidacticos: apoyosDidacticos.value,
+    tpSemana: tpSemana.value,
+    trSemana: trSemana.value,
+  });
 };
 
-const downloadFile = () => {
-  if (fileURL.value) {
-    const link = document.createElement('a');
-    link.href = fileURL.value;
-    link.download = 'avanceProgramatico.pdf'; // Nombre predeterminado del archivo descargado
-    link.click();
-  } else {
-    alert('No hay ningún archivo para descargar');
-  }
-};
-
-const toggleEditMode = () => {
-  if (isEditing.value) {
-    saveAnnotations();
-  }
-  isEditing.value = !isEditing.value;
-};
-
-const addAnnotation = () => {
-  if (annotation.value) {
-    annotations.value.push(annotation.value);
-    annotation.value = '';
-  }
-};
-
-const removeAnnotation = (index) => {
-  annotations.value.splice(index, 1);
-};
-
-const saveAnnotations = () => {
-  // Aquí puedes añadir la lógica para guardar las anotaciones en el archivo PDF.
-  // En este ejemplo, solo simulamos el guardado.
-  alert('Anotaciones guardadas (simulación)');
+const enviarFormulario = () => {
+  console.log('Formulario enviado:', {
+    caracterizacion: caracterizacion.value,
+    intencionDidactica: intencionDidactica.value,
+    competenciaAsignatura: competenciaAsignatura.value,
+    competenciaSeleccionada: competenciaSeleccionada.value,
+    descripcionCompetencia: descripcionCompetencia.value,
+    temasSubtemas: temasSubtemas.value,
+    actividadesAprendizaje: actividadesAprendizaje.value,
+    actividadesEnsenanza: actividadesEnsenanza.value,
+    desarrolloCompetencias: desarrolloCompetencias.value,
+    horasPracticasTeoricas: horasPracticasTeoricas.value,
+    fuentesInformacion: fuentesInformacion.value,
+    apoyosDidacticos: apoyosDidacticos.value,
+    tpSemana: tpSemana.value,
+    trSemana: trSemana.value,
+  });
 };
 </script>
 
-<style scoped>
-.avance-programatico {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2rem;
-  background-color: #f5f5f5;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 900px;
-  margin: 2rem auto;
-}
-
-h1 {
-  font-size: 2rem;
-  color: #333;
-  margin-bottom: 1.5rem;
-}
-
-.actions {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.upload-button,
-.download-button,
-.edit-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-  text-decoration: none;
-}
-
-.upload-button input {
-  display: none;
-}
-
-.upload-button:hover,
-.download-button:hover,
-.edit-button:hover {
-  background-color: #45a049;
-}
-
-.download-button {
-  background-color: #2196f3;
-}
-
-.download-button:hover {
-  background-color: #1e88e5;
-}
-
-.download-button:disabled {
-  background-color: #9e9e9e;
-  cursor: not-allowed;
-}
-
-.edit-button {
-  background-color: #ff9800;
-}
-
-.edit-button:hover {
-  background-color: #fb8c00;
-}
-
-.edit-button:disabled {
-  background-color: #9e9e9e;
-  cursor: not-allowed;
-}
-
-.material-icons {
-  margin-left: 0.5rem;
-}
-
-.document-viewer {
-  width: 100%;
-  max-width: 800px;
-  height: 500px;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.document-viewer iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-
-.editor {
-  width: 100%;
-  max-width: 800px;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+<style lang="scss" scoped>
+.formulario-view {
+  flex-grow: 1;
   padding: 1rem;
-  margin-top: 2rem;
-}
+  max-width: 1200px;
+  margin: 0 auto;
 
-.editor h2 {
-  font-size: 1.5rem;
-  color: #333;
-  margin-bottom: 1rem;
-}
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--dark);
+  }
 
-.editor textarea {
-  width: 100%;
-  height: 100px;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 1rem;
-}
+  .content-box {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+  }
 
-.add-annotation {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-}
+  .listID {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 
-.add-annotation:hover {
-  background-color: #45a049;
-}
+    .list_itemID {
+      margin-bottom: 0.5rem;
 
-.annotations {
-  margin-top: 1rem;
-}
+      .list_buttonID {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem;
+        background-color: var(--primary);
+        color: white;
+        border-radius: 0.25rem;
+        cursor: pointer;
 
-.annotations h3 {
-  font-size: 1.25rem;
-  color: #333;
-  margin-bottom: 0.5rem;
-}
+        h2 {
+          margin: 0;
+          font-size: 1rem;
+        }
 
-.annotations ul {
-  list-style-type: none;
-  padding: 0;
-}
+        .list_arrowID {
+          width: 1rem;
+          height: 1rem;
+        }
+      }
 
-.annotations li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 0.5rem;
-  margin-bottom: 0.5rem;
-}
+      .listaShowID {
+        padding: 0.5rem;
+        background-color: #f9f9f9;
+        border-radius: 0.25rem;
+        margin-top: 0.5rem;
 
-.annotations button {
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  padding: 0.25rem 0.5rem;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 0.875rem;
-  transition: background-color 0.3s ease;
-}
+        .listInternaID {
+          .tablas {
+            table {
+              width: 100%;
+              border-collapse: collapse;
 
-.annotations button:hover {
-  background-color: #c0392b;
-}
+              th, td {
+                padding: 0.5rem;
+                border: 1px solid #ddd;
+              }
 
-.corrections-table {
-  width: 100%;
-  max-width: 800px;
-  margin-top: 2rem;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
-}
+              textarea {
+                width: 100%;
+                resize: vertical;
+                min-height: 100px;
+                padding: 0.5rem;
+                border: 1px solid #ddd;
+                border-radius: 0.25rem;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 
-.corrections-table h2 {
-  font-size: 1.5rem;
-  color: #333;
-  margin-bottom: 1rem;
-}
+  .botonesID {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
 
-.corrections-table table {
-  width: 100%;
-  border-collapse: collapse;
-}
+    .btnB, .btn {
+      padding: 0.5rem 1rem;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 0.25rem;
+      cursor: pointer;
 
-.corrections-table th,
-.corrections-table td {
-  padding: 0.75rem;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-
-.corrections-table th {
-  background-color: #f9f9f9;
-  font-weight: bold;
-}
-
-.corrections-table tr:last-child td {
-  border-bottom: none;
+      &:hover {
+        background-color: var(--primary-alt);
+      }
+    }
+  }
 }
 </style>

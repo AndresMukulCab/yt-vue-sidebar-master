@@ -1,34 +1,38 @@
 <template>
-    <div class="onedrive-view">
-      <!-- Título de la vista -->
-      <h1>Proyectos Docencia</h1>
+    <div class="acuse-estudiante-view">
+      <h1>Acuse del Estudiante</h1>
   
-      <!-- Contenedor principal (box) -->
       <div class="content-box">
-        <!-- Barra de herramientas (opcional) -->
         <div class="toolbar">
           <button class="toolbar-button" @click="addFolder">
             <span class="material-icons">create_new_folder</span>
             Nueva Carpeta
           </button>
-          <button class="toolbar-button" @click="uploadFile">
+          <button class="toolbar-button" @click="uploadDocument">
             <span class="material-icons">upload</span>
-            Subir Archivo
+            Subir Documento
           </button>
         </div>
   
-        <!-- Contenedor de carpetas y documentos -->
         <div class="items-grid">
-          <!-- Carpeta -->
-          <div class="item folder" v-for="folder in folders" :key="folder.id">
+          <div class="item folder" v-for="folder in folders" :key="folder.id" @click="openFolder(folder)">
             <span class="item-icon">📁</span>
             <span class="item-name">{{ folder.name }}</span>
           </div>
+        </div>
+      </div>
   
-          <!-- Documento -->
-          <div class="item file" v-for="file in files" :key="file.id">
-            <span class="item-icon">📄</span>
-            <span class="item-name">{{ file.name }}</span>
+      <div v-if="selectedFolder" class="folder-modal">
+        <div class="modal-content">
+          <h2>{{ selectedFolder.name }}</h2>
+          <button class="close-modal" @click="selectedFolder = null">
+            <span class="material-icons">close</span>
+          </button>
+          <div class="documents-list">
+            <div class="item file" v-for="document in selectedFolder.documents" :key="document.id">
+              <span class="item-icon">📄</span>
+              <span class="item-name">{{ document.name }}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -38,43 +42,56 @@
   <script setup>
   import { ref } from 'vue';
   
-  // Datos de ejemplo para carpetas y documentos
   const folders = ref([
-    { id: 1, name: 'Proyecto 1' },
-    { id: 2, name: 'Proyecto 2' },
-    { id: 3, name: 'Proyecto 3' },
+    {
+      id: 1,
+      name: 'Acuses 2023',
+      documents: [
+        { id: 1, name: 'Acuse 1.pdf' },
+        { id: 2, name: 'Acuse 2.docx' },
+      ],
+    },
+    {
+      id: 2,
+      name: 'Acuses 2022',
+      documents: [
+        { id: 1, name: 'Acuse 1.pdf' },
+        { id: 2, name: 'Acuse 2.docx' },
+      ],
+    },
   ]);
   
-  const files = ref([
-    { id: 1, name: 'Documento 1.pdf' },
-    { id: 2, name: 'Documento 2.docx' },
-    { id: 3, name: 'Imagen.png' },
-  ]);
+  const selectedFolder = ref(null);
   
-  // Función para agregar una nueva carpeta
   const addFolder = () => {
     const newFolder = {
       id: folders.value.length + 1,
-      name: `Proyecto ${folders.value.length + 1}`,
+      name: `Acuses ${new Date().getFullYear()}`,
+      documents: [],
     };
     folders.value.push(newFolder);
   };
   
-  // Función para subir un archivo (simulación)
-  const uploadFile = () => {
-    const newFile = {
-      id: files.value.length + 1,
-      name: `Archivo ${files.value.length + 1}.txt`,
+  const uploadDocument = () => {
+    if (!selectedFolder.value) return;
+  
+    const newDocument = {
+      id: selectedFolder.value.documents.length + 1,
+      name: `Documento ${selectedFolder.value.documents.length + 1}.pdf`,
     };
-    files.value.push(newFile);
+    selectedFolder.value.documents.push(newDocument);
+  };
+  
+  const openFolder = (folder) => {
+    selectedFolder.value = folder;
   };
   </script>
   
   <style lang="scss" scoped>
-  .onedrive-view {
-    flex-grow: 1; /* Ocupa el espacio restante junto al sidebar */
+  .acuse-estudiante-view {
+    flex-grow: 1;
     padding: 2rem;
-    margin-left: var(--sidebar-width); /* Respeta el ancho del sidebar */
+    margin-left: var(--sidebar-width);
     max-width: 1200px;
     margin: 0 auto;
   
@@ -150,42 +167,9 @@
           font-size: 0.9rem;
           color: var(--dark);
           text-align: center;
-          word-break: break-word; /* Evita que el texto se desborde */
-        }
-      }
-    }
-  }
-  
-  /* Estilos responsive */
-  @media (max-width: 768px) {
-    .onedrive-view {
-      margin-left: 0; /* En móviles, el sidebar está oculto */
-      padding: 1rem;
-  
-      h1 {
-        font-size: 1.5rem;
-      }
-  
-      .content-box {
-        padding: 1rem;
-      }
-  
-      .items-grid {
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-        gap: 1rem;
-  
-        .item {
-          padding: 0.75rem;
-  
-          .item-icon {
-            font-size: 2rem;
-          }
-  
-          .item-name {
-            font-size: 0.8rem;
-          }
         }
       }
     }
   }
   </style>
+  

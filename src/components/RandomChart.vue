@@ -9,59 +9,59 @@ import { computed } from 'vue';
 import { Bar } from 'vue-chartjs';
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js';
 
-// Register Chart.js components
+// Registra los componentes de Chart.js
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
-// Define props
+// Define las props
 const props = defineProps({
   data: {
     type: Array,
-    required: true
+    required: true,
   },
   label: {
     type: String,
-    required: true
+    required: true,
   },
   backgroundColor: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
 
-// Computed properties for chart data and options
+// Datos del gráfico
 const chartData = computed(() => {
   return {
-    labels: props.data.map(item => item.label),
+    labels: props.data.map((item) => item.label),
     datasets: [
       {
         label: props.label,
         backgroundColor: props.backgroundColor,
-        data: props.data.map(item => item.value)
-      }
-    ]
+        data: props.data.map((item) => item.value),
+      },
+    ],
   };
 });
 
+// Opciones del gráfico
 const chartOptions = {
   responsive: true,
   plugins: {
     legend: {
-      position: 'top'
+      position: 'top',
     },
     title: {
       display: true,
-      text: 'Estadísticas actuales'
-    }
-  }
+      text: props.label,
+    },
+  },
 };
 </script>
 
 <style scoped>
 .chart-container {
-  margin-top: 2rem;
+  background-color: #ffffff;
   padding: 1rem;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 </style>

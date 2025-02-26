@@ -35,6 +35,16 @@ const routes = [
   },
 
   {
+    path: '/ProjectosVinculacion',
+    component: () => import('../views/ProjectosVinculacion.vue')
+  },
+
+  {
+    path: '/ProyectosInvestigacion',
+    component: () => import('../views/ProyectosInvestigacion.vue')
+  },
+
+  {
     path: '/SeguimientoMaestros',
     component: () => import('../views/SeguimientoMaestros.vue')
   },
@@ -45,8 +55,44 @@ const routes = [
   },
 
   {
+    path: '/Horario',
+    component: () => import('../views/Horario.vue')
+  },
+
+  {
     path: '/Nombramientos',
     component: () => import('../views/Nombramientos.vue')
+  },
+
+  {
+    path: '/DocumentosConstancias',
+    component: () => import('../views/DocumentosConstancias.vue')
+  },
+
+  {
+    path: '/AcuseEstudiante',
+    component: () => import('../views/AcuseEstudiante.vue')
+  },
+
+  {
+    path: '/EvaluacionDiagnostica',
+    component: () => import('../views/EvaluacionDiagnostica.vue')
+  },
+
+  {
+    path: '/CalificacionesParciales',
+    component: () => import('../views/CalificacionesParciales.vue')
+  },
+
+
+  {
+    path: '/ConstanciasCumplimiento',
+    component: () => import('../views/ConstanciasCumplimiento.vue')
+  },
+
+  {
+    path: '/ActasCalificaciones',
+    component: () => import('../views/ActasCalificaciones.vue')
   },
 
   {
@@ -58,7 +104,6 @@ const routes = [
     path: '/Calendario',
     component: () => import('../views/Calendario.vue')
   },
-
 
   {
     path: '/DatosG',

@@ -43,11 +43,11 @@
 		</div>
   
 		<div v-if="isComisionesOpen" class="submenu">
-		  <router-link to="/Documentos" class="button" aria-label="Documentos">
+		  <router-link to="/DocumentosConstancias" class="button" aria-label="Documentos">
 			<span class="material-icons">description</span>
 			<span class="text">Documentos</span>
 		  </router-link>
-		  <router-link to="/Constancias" class="button" aria-label="Constancias">
+		  <router-link to="/ConstanciasCumplimiento" class="button" aria-label="Constancias">
 			<span class="material-icons">description</span>
 			<span class="text">Constancias</span>
 		  </router-link>
@@ -76,7 +76,7 @@
 			<span class="material-symbols-outlined">folder_open</span>
 			<span class="text">Carpeta de evidencias</span>
 		  </router-link>
-		  <router-link to="/SeguimientoMaestros" class="button" aria-label="Acuse del estudiante">
+		  <router-link to="/AcuseEstudiante" class="button" aria-label="Acuse del estudiante">
 			<span class="material-icons">description</span>
 			<span class="text">Acuse del estudiante</span>
 		  </router-link>
@@ -101,7 +101,7 @@
 			<span class="material-icons">description</span>
 			<span class="text">Proyectos de docencia</span>
 		  </router-link>
-		  <router-link to="/ProyectosVinculacion" class="button" aria-label="Proyectos de vinculación">
+		  <router-link to="/ProjectosVinculacion" class="button" aria-label="Proyectos de vinculación">
 			<span class="material-icons">description</span>
 			<span class="text">Proyectos de vinculación</span>
 		  </router-link>

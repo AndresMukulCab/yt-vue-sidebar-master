@@ -2,7 +2,7 @@
   <div class="login-container">
     <div class="login-card">
       <div class="logo">
-        <img src=".\src\assets\university-logo.png" alt="Logo Universidad" /> <!-- Reemplaza con tu logo -->
+        <img src=".\src\assets\LogoITCH.png" alt="LogoITCH" /> <!-- Reemplaza con tu logo -->
       </div>
       <h2>Iniciar Sesión</h2>
       <form @submit.prevent="handleLogin">

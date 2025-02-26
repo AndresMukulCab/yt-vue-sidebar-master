@@ -1,7 +1,7 @@
 <template>
     <div class="onedrive-view">
       <!-- Título de la vista -->
-      <h1>Proyectos Docencia</h1>
+      <h1>Proyectos de Vinculación</h1>
   
       <!-- Contenedor principal (box) -->
       <div class="content-box">
@@ -40,9 +40,9 @@
   
   // Datos de ejemplo para carpetas y documentos
   const folders = ref([
-    { id: 1, name: 'Proyecto 1' },
-    { id: 2, name: 'Proyecto 2' },
-    { id: 3, name: 'Proyecto 3' },
+    { id: 1, name: 'Vinculación 1' },
+    { id: 2, name: 'Vinculación 2' },
+    { id: 3, name: 'Vinculación 3' },
   ]);
   
   const files = ref([
@@ -55,7 +55,7 @@
   const addFolder = () => {
     const newFolder = {
       id: folders.value.length + 1,
-      name: `Proyecto ${folders.value.length + 1}`,
+      name: `Vinculación ${folders.value.length + 1}`,
     };
     folders.value.push(newFolder);
   };
