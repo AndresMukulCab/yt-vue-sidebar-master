@@ -96,6 +96,12 @@ const routes = [
   },
 
   {
+    path: '/Tutorias',
+    component: () => import('../views/Tutorias.vue')
+  },
+
+
+  {
     path: '/Configuracion',
     component: () => import('../views/Configuracion.vue')
   },
